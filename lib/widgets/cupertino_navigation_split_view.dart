@@ -38,7 +38,8 @@ class _CupertinoNavigationSplitViewState
   @override
   Widget build(BuildContext context) {
     // var width = MediaQuery.of(context).size.width;
-    // var height = MediaQuery.of(context).size.height;
+    var height = MediaQuery.of(context).size;
+    log(height.toString());
 
     var newOrientation = MediaQuery.of(context).orientation;
 
