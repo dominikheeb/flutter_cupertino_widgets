@@ -23,7 +23,14 @@ class _SidebarItemGroupState extends State<SidebarItemGroup> with SingleTickerPr
   @override
   void initState() {
     _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
+    _animationController.forward(from: 1);
     super.initState();
+  }
+
+  @override
+  dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -63,24 +70,21 @@ class _SidebarItemGroupState extends State<SidebarItemGroup> with SingleTickerPr
               turns = turns == 0.0 ? 0.25 : 0.0;
 
               if (isOpen) {
-                _animationController.reverse();
-              } else {
                 _animationController.forward();
+              } else {
+                _animationController.reverse();
               }
             }),
           ),
         ),
-        ClipRect(
-          child: SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, 0),
-              end: const Offset(0, -1),
-            ).animate(_animationController),
-            child: Column(
-              children: [
-                ...widget.sidebarItems,
-              ],
-            ),
+        SizeTransition(
+          sizeFactor: _animationController,
+          axis: Axis.vertical,
+          axisAlignment: -1,
+          child: Column(
+            children: [
+              ...widget.sidebarItems,
+            ],
           ),
         )
       ],
