@@ -43,6 +43,19 @@ class Home extends StatelessWidget {
               ),
             ],
           ),
+          SidebarItemGroup(
+            title: "Playlists",
+            sidebarItems: [
+              SidebarItem(
+                title: "Workout",
+                icon: CupertinoIcons.list_bullet,
+              ),
+              SidebarItem(
+                title: "Dance",
+                icon: CupertinoIcons.list_bullet,
+              ),
+            ],
+          ),
         ],
       ),
     );
