@@ -15,8 +15,15 @@ class SidebarItemGroup extends StatefulWidget {
   State<SidebarItemGroup> createState() => _SidebarItemGroupState();
 }
 
-class _SidebarItemGroupState extends State<SidebarItemGroup> {
+class _SidebarItemGroupState extends State<SidebarItemGroup> with SingleTickerProviderStateMixin {
   var isOpen = true;
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +52,30 @@ class _SidebarItemGroupState extends State<SidebarItemGroup> {
                 ),
                 onTap: () => setState(() {
                   isOpen = !isOpen;
+                  if (isOpen) {
+                    _animationController.reverse();
+                  } else {
+                    _animationController.forward();
+                  }
                 }),
               ),
               const SizedBox(width: 18)
             ],
           ),
         ),
-        if (isOpen) ...widget.sidebarItems,
+        ClipRect(
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, 0),
+              end: const Offset(0, -1),
+            ).animate(_animationController),
+            child: Column(
+              children: [
+                ...widget.sidebarItems,
+              ],
+            ),
+          ),
+        )
       ],
     );
   }
