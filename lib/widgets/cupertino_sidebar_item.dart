@@ -3,12 +3,14 @@ import 'package:flutter_cupertino_widgets/widgets/cupertino_navigation_split_vie
 
 class SidebarItem extends StatelessWidget {
   final String title;
-  final String? subtitle;
+  final String trailing;
+  final String subtitle;
   final IconData? icon;
 
   const SidebarItem({
     required this.title,
-    this.subtitle,
+    this.subtitle = "",
+    this.trailing = "",
     this.icon,
     super.key,
   });
@@ -28,18 +30,43 @@ class SidebarItem extends StatelessWidget {
                 Radius.circular(8),
               )),
           child: Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: subtitle.isEmpty ? 10.0 : 4.0),
             child: Row(
               children: [
-                Icon(
-                  icon,
-                  color: isSelected ? CupertinoColors.white : sidebarState.color,
-                ),
+                if (icon != null) ...{
+                  Icon(
+                    icon,
+                    color: isSelected ? CupertinoColors.white : sidebarState.color,
+                  ),
+                },
                 const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: TextStyle(color: isSelected ? CupertinoColors.white : CupertinoColors.black),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(color: isSelected ? CupertinoColors.white : CupertinoColors.black),
+                      ),
+                      if (subtitle.isNotEmpty) ...{
+                        Text(
+                          subtitle,
+                          style: TextStyle(
+                            color: isSelected ? CupertinoColors.white : CupertinoColors.systemGrey,
+                            fontSize: 12,
+                          ),
+                        ),
+                      }
+                    ],
+                  ),
                 ),
+                Text(
+                  trailing,
+                  style: TextStyle(
+                    color: isSelected ? CupertinoColors.white : CupertinoColors.systemGrey,
+                    fontSize: 16,
+                  ),
+                )
               ],
             ),
           ),

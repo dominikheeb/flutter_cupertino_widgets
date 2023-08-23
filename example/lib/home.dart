@@ -37,6 +37,7 @@ class Home extends StatelessWidget {
               SidebarItem(
                 title: "Recently Added",
                 icon: CupertinoIcons.clock,
+                subtitle: "23.09.2023",
               ),
               SidebarItem(
                 title: "Albums",
@@ -50,10 +51,12 @@ class Home extends StatelessWidget {
               SidebarItem(
                 title: "Workout",
                 icon: CupertinoIcons.list_bullet,
+                trailing: "23",
               ),
               SidebarItem(
                 title: "Dance",
                 icon: CupertinoIcons.list_bullet,
+                trailing: "45",
               ),
             ],
           ),
