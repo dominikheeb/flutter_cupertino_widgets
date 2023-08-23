@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_cupertino_widgets/flutter_cupertino_widgets.dart';
+import 'package:flutter_cupertino_widgets/widgets/cupertino_sidebar_item.dart';
+import 'package:flutter_cupertino_widgets/widgets/cupertino_sidebar_item_group.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -7,11 +9,41 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: CupertinoDynamicColor.maybeResolve(
-          CupertinoColors.systemBackground, context),
+      color: CupertinoDynamicColor.maybeResolve(CupertinoColors.systemBackground, context),
       child: const CupertinoNavigationSplitView(
-        title: "FLUTTER",
+        title: "Music",
         detail: Center(child: Text("Hello World")),
+        sidebarItems: [
+          SidebarItem(
+            title: "Listen Now",
+            icon: CupertinoIcons.play_circle,
+          ),
+          SidebarItem(
+            title: "Browse",
+            icon: CupertinoIcons.square_grid_2x2,
+          ),
+          SidebarItem(
+            title: "Radio",
+            icon: CupertinoIcons.dot_radiowaves_left_right,
+          ),
+          SidebarItem(
+            title: "Search",
+            icon: CupertinoIcons.search,
+          ),
+          SidebarItemGroup(
+            title: "Library",
+            sidebarItems: [
+              SidebarItem(
+                title: "Recently Added",
+                icon: CupertinoIcons.clock,
+              ),
+              SidebarItem(
+                title: "Albums",
+                icon: CupertinoIcons.music_albums,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

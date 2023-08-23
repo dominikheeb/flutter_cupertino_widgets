@@ -8,6 +8,7 @@ const Color _kDefaultNavBarBorderColor = Color(0x4D000000);
 
 class CupertinoNavigationSplitView extends StatefulWidget {
   final String? title;
+  final List<Widget>? sidebarItems;
   final NavigationViewStyle style;
   final NavigationSplitViewVisibility visibility;
   final Widget detail;
@@ -17,16 +18,15 @@ class CupertinoNavigationSplitView extends StatefulWidget {
     this.title,
     this.style = NavigationViewStyle.automatic,
     this.visibility = NavigationSplitViewVisibility.automatic,
+    this.sidebarItems,
     required this.detail,
   }) : super(key: key);
 
   @override
-  State<CupertinoNavigationSplitView> createState() =>
-      _CupertinoNavigationSplitViewState();
+  State<CupertinoNavigationSplitView> createState() => _CupertinoNavigationSplitViewState();
 }
 
-class _CupertinoNavigationSplitViewState
-    extends State<CupertinoNavigationSplitView> {
+class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitView> {
   bool collapsed = false;
   Orientation? orientation;
 
@@ -77,12 +77,9 @@ class _CupertinoNavigationSplitViewState
       child: Row(
         children: [
           AnimatedSidebar(
-            width: effectiveVisibilty ==
-                        NavigationSplitViewVisibility.doubleColumn &&
-                    isLandscape
-                ? 323
-                : 0,
+            width: effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn && isLandscape ? 323 : 0,
             title: widget.title,
+            sidebarItems: widget.sidebarItems ?? [],
           ),
           Expanded(
             child: widget.detail,
@@ -125,15 +122,9 @@ class _CupertinoNavigationSplitViewState
           ),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 320),
-            opacity: effectiveVisibilty ==
-                        NavigationSplitViewVisibility.doubleColumn &&
-                    isLandscape == false
-                ? 1
-                : 0,
+            opacity: effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn && isLandscape == false ? 1 : 0,
             child: IgnorePointer(
-              ignoring: effectiveVisibilty !=
-                      NavigationSplitViewVisibility.doubleColumn ||
-                  isLandscape == true,
+              ignoring: effectiveVisibilty != NavigationSplitViewVisibility.doubleColumn || isLandscape == true,
               child: GestureDetector(
                 onTap: () => setState(() {
                   collapsed = true;
@@ -147,12 +138,9 @@ class _CupertinoNavigationSplitViewState
             ),
           ),
           AnimatedSidebar(
-            width: effectiveVisibilty ==
-                        NavigationSplitViewVisibility.doubleColumn &&
-                    isLandscape == false
-                ? 323
-                : 0,
+            width: effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn && isLandscape == false ? 323 : 0,
             title: widget.title,
+            sidebarItems: widget.sidebarItems ?? [],
           ),
         ],
       );
@@ -165,10 +153,12 @@ class _CupertinoNavigationSplitViewState
 class AnimatedSidebar extends StatelessWidget {
   final double width;
   final String? title;
+  final List<Widget> sidebarItems;
 
   const AnimatedSidebar({
     Key? key,
     required this.width,
+    required this.sidebarItems,
     this.title,
   }) : super(key: key);
 
@@ -178,8 +168,7 @@ class AnimatedSidebar extends StatelessWidget {
       duration: const Duration(milliseconds: 320),
       width: width,
       decoration: BoxDecoration(
-        color: CupertinoDynamicColor.resolve(
-            CupertinoColors.secondarySystemBackground, context),
+        color: CupertinoDynamicColor.resolve(CupertinoColors.secondarySystemBackground, context),
         border: const Border(
           right: BorderSide(
             color: _kDefaultNavBarBorderColor,
@@ -200,48 +189,7 @@ class AnimatedSidebar extends StatelessWidget {
                 largeTitle: title,
               ),
               SliverList(
-                delegate: SliverChildListDelegate([
-                  Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    child: const Text("a"),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    child: const Text("a"),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    child: const Text("a"),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    child: const Text("a"),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    child: const Text("a"),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    child: const Text("a"),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    child: const Text("a"),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    child: const Text("a"),
-                  ),
-                ]),
+                delegate: SliverChildListDelegate(sidebarItems),
               )
             ],
           ),
