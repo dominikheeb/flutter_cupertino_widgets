@@ -3,11 +3,14 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_cupertino_widgets/widgets/cupertino_navigation_split_view_header.dart';
 
+import 'cupertino_navigation_split_view_state.dart';
+
 const int ipadBreakpoint = 1024;
 const Color _kDefaultNavBarBorderColor = Color(0x4D000000);
 
 class CupertinoNavigationSplitView extends StatefulWidget {
   final String? title;
+  final Color color;
   final List<Widget>? sidebarItems;
   final NavigationViewStyle style;
   final NavigationSplitViewVisibility visibility;
@@ -15,6 +18,7 @@ class CupertinoNavigationSplitView extends StatefulWidget {
 
   const CupertinoNavigationSplitView({
     Key? key,
+    required this.color,
     this.title,
     this.style = NavigationViewStyle.automatic,
     this.visibility = NavigationSplitViewVisibility.automatic,
@@ -29,10 +33,12 @@ class CupertinoNavigationSplitView extends StatefulWidget {
 class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitView> {
   bool collapsed = false;
   Orientation? orientation;
+  late String selectedItem;
 
   @override
   void initState() {
     super.initState();
+    selectedItem = "";
   }
 
   @override
@@ -69,22 +75,33 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
       effectiveVisibilty = NavigationSplitViewVisibility.detailOnly;
     }
 
-    return _sidebarControlWrapper(
-      context: context,
-      isTablet: isTablet,
-      isLandscape: isLandscape,
-      effectiveVisibilty: effectiveVisibilty,
-      child: Row(
-        children: [
-          AnimatedSidebar(
-            width: effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn && isLandscape ? 323 : 0,
-            title: widget.title,
-            sidebarItems: widget.sidebarItems ?? [],
-          ),
-          Expanded(
-            child: widget.detail,
-          ),
-        ],
+    void updateSelectedItem(String updatedSelectedItem) {
+      setState(() {
+        selectedItem = updatedSelectedItem;
+      });
+    }
+
+    return CupertinoNavigationSplitViewState(
+      color: widget.color,
+      updateSelectedItem: updateSelectedItem,
+      selectedItem: selectedItem,
+      child: _sidebarControlWrapper(
+        context: context,
+        isTablet: isTablet,
+        isLandscape: isLandscape,
+        effectiveVisibilty: effectiveVisibilty,
+        child: Row(
+          children: [
+            AnimatedSidebar(
+              width: effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn && isLandscape ? 323 : 0,
+              title: widget.title,
+              sidebarItems: widget.sidebarItems ?? [],
+            ),
+            Expanded(
+              child: widget.detail,
+            ),
+          ],
+        ),
       ),
     );
   }

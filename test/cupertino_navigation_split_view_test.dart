@@ -8,8 +8,7 @@ const iPadLandscape12InchSize = Size(1366.0, 1024.0);
 const iPadPortrait12InchSize = Size(1024.0, 1366.0);
 
 void main() {
-  testWidgets('CupertinoNavigationSplitView for 12inch Ipad is showing Sidebar',
-      (tester) async {
+  testWidgets('CupertinoNavigationSplitView for 12inch Ipad is showing Sidebar', (tester) async {
     // setup
     tester.binding.window.physicalSizeTestValue = iPadLandscape12InchSize;
 
@@ -20,6 +19,7 @@ void main() {
       const TestApp(
         child: CupertinoNavigationSplitView(
           title: "FLUTTER",
+          color: CupertinoColors.systemOrange,
           detail: Center(child: Text("Hello World")),
         ),
       ),
@@ -31,9 +31,7 @@ void main() {
 
     final foundWidgets = sideBarFinder.evaluate().toList();
 
-    expect(foundWidgets,
-        anyElement(predicate<Element>((v) => v.size?.width == 0)));
-    expect(foundWidgets,
-        anyElement(predicate<Element>((v) => v.size?.width != 0)));
+    expect(foundWidgets, anyElement(predicate<Element>((v) => v.size?.width == 0)));
+    expect(foundWidgets, anyElement(predicate<Element>((v) => v.size?.width != 0)));
   });
 }

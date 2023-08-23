@@ -11,6 +11,7 @@ class Home extends StatelessWidget {
     return Container(
       color: CupertinoDynamicColor.maybeResolve(CupertinoColors.systemBackground, context),
       child: const CupertinoNavigationSplitView(
+        color: CupertinoColors.systemOrange,
         title: "Music",
         detail: Center(child: Text("Hello World")),
         sidebarItems: [
