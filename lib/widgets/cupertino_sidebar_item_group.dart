@@ -81,10 +81,16 @@ class _SidebarItemGroupState extends State<SidebarItemGroup> with SingleTickerPr
           sizeFactor: _animationController,
           axis: Axis.vertical,
           axisAlignment: -1,
-          child: Column(
-            children: [
-              ...widget.sidebarItems,
-            ],
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, -1),
+              end: const Offset(0, 0),
+            ).animate(_animationController),
+            child: Column(
+              children: [
+                ...widget.sidebarItems,
+              ],
+            ),
           ),
         )
       ],
