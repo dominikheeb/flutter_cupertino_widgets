@@ -17,6 +17,7 @@ class SidebarItemGroup extends StatefulWidget {
 
 class _SidebarItemGroupState extends State<SidebarItemGroup> with SingleTickerProviderStateMixin {
   var isOpen = true;
+  var turns = 0.25;
   late AnimationController _animationController;
 
   @override
@@ -31,36 +32,42 @@ class _SidebarItemGroupState extends State<SidebarItemGroup> with SingleTickerPr
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 16.0, bottom: 4),
-          child: Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 24),
-                  child: Text(
-                    widget.title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+          child: GestureDetector(
+            child: Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 24),
+                    child: Text(
+                      widget.title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              GestureDetector(
-                child: Icon(
-                  isOpen ? CupertinoIcons.chevron_down : CupertinoIcons.chevron_up,
-                  size: 18,
+                AnimatedRotation(
+                  duration: const Duration(milliseconds: 200),
+                  turns: turns,
+                  child: const Icon(
+                    CupertinoIcons.chevron_forward,
+                    size: 22,
+                  ),
                 ),
-                onTap: () => setState(() {
-                  isOpen = !isOpen;
-                  if (isOpen) {
-                    _animationController.reverse();
-                  } else {
-                    _animationController.forward();
-                  }
-                }),
-              ),
-              const SizedBox(width: 18)
-            ],
+                const SizedBox(width: 18)
+              ],
+            ),
+            onTap: () => setState(() {
+              isOpen = !isOpen;
+              turns = turns == 0.0 ? 0.25 : 0.0;
+
+              if (isOpen) {
+                _animationController.reverse();
+              } else {
+                _animationController.forward();
+              }
+            }),
           ),
         ),
         ClipRect(
