@@ -12,6 +12,7 @@ class CupertinoNavigationSplitView extends StatefulWidget {
   final String? title;
   final Color color;
   final List<Widget>? sidebarItems;
+  final Widget? footer;
   final NavigationViewStyle style;
   final NavigationSplitViewVisibility visibility;
   final Widget detail;
@@ -23,6 +24,7 @@ class CupertinoNavigationSplitView extends StatefulWidget {
     this.style = NavigationViewStyle.automatic,
     this.visibility = NavigationSplitViewVisibility.automatic,
     this.sidebarItems,
+    this.footer,
     required this.detail,
   }) : super(key: key);
 
@@ -96,6 +98,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
               width: effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn && isLandscape ? 323 : 0,
               title: widget.title,
               sidebarItems: widget.sidebarItems ?? [],
+              footer: widget.footer,
             ),
             Expanded(
               child: widget.detail,
@@ -171,12 +174,14 @@ class AnimatedSidebar extends StatelessWidget {
   final double width;
   final String? title;
   final List<Widget> sidebarItems;
+  final Widget? footer;
 
   const AnimatedSidebar({
     Key? key,
     required this.width,
     required this.sidebarItems,
     this.title,
+    this.footer,
   }) : super(key: key);
 
   @override
@@ -200,14 +205,21 @@ class AnimatedSidebar extends StatelessWidget {
         alignment: Alignment.centerRight,
         child: SizedBox(
           width: 323,
-          child: CustomScrollView(
-            slivers: [
-              CupertinoNavigationSplitViewHeader(
-                largeTitle: title,
+          child: Column(
+            children: [
+              Expanded(
+                child: CustomScrollView(
+                  slivers: [
+                    CupertinoNavigationSplitViewHeader(
+                      largeTitle: title,
+                    ),
+                    SliverList(
+                      delegate: SliverChildListDelegate(sidebarItems),
+                    ),
+                  ],
+                ),
               ),
-              SliverList(
-                delegate: SliverChildListDelegate(sidebarItems),
-              )
+              if (footer != null) ...{footer!}
             ],
           ),
         ),

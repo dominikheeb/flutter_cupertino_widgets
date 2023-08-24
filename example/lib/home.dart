@@ -61,6 +61,17 @@ class Home extends StatelessWidget {
             ],
           ),
         ],
+        footer: SizedBox(
+          height: 48,
+          child: Text(
+            "+ Playlist",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: CupertinoColors.systemOrange,
+            ),
+          ),
+        ),
       ),
     );
   }
