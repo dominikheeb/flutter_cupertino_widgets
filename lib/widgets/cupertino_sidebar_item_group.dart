@@ -4,10 +4,12 @@ import 'package:flutter_cupertino_widgets/widgets/cupertino_sidebar_item.dart';
 class SidebarItemGroup extends StatefulWidget {
   final String title;
   final List<SidebarItem> sidebarItems;
+  final bool disableCollapsing;
 
   const SidebarItemGroup({
     required this.title,
     required this.sidebarItems,
+    this.disableCollapsing = false,
     super.key,
   });
 
@@ -54,27 +56,31 @@ class _SidebarItemGroupState extends State<SidebarItemGroup> with SingleTickerPr
                     ),
                   ),
                 ),
-                AnimatedRotation(
-                  duration: const Duration(milliseconds: 200),
-                  turns: turns,
-                  child: const Icon(
-                    CupertinoIcons.chevron_forward,
-                    size: 22,
+                if (!widget.disableCollapsing) ...{
+                  AnimatedRotation(
+                    duration: const Duration(milliseconds: 200),
+                    turns: turns,
+                    child: const Icon(
+                      CupertinoIcons.chevron_forward,
+                      size: 22,
+                    ),
                   ),
-                ),
+                },
                 const SizedBox(width: 18)
               ],
             ),
-            onTap: () => setState(() {
-              isOpen = !isOpen;
-              turns = turns == 0.0 ? 0.25 : 0.0;
+            onTap: () => widget.disableCollapsing
+                ? null
+                : setState(() {
+                    isOpen = !isOpen;
+                    turns = turns == 0.0 ? 0.25 : 0.0;
 
-              if (isOpen) {
-                _animationController.forward();
-              } else {
-                _animationController.reverse();
-              }
-            }),
+                    if (isOpen) {
+                      _animationController.forward();
+                    } else {
+                      _animationController.reverse();
+                    }
+                  }),
           ),
         ),
         SizeTransition(

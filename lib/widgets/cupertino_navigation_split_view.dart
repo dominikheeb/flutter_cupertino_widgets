@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_cupertino_widgets/widgets/cupertino_navigation_split_view_header.dart';
+import 'package:flutter_cupertino_widgets/flutter_cupertino_widgets.dart';
 
 import 'cupertino_navigation_split_view_state.dart';
 
@@ -9,22 +9,18 @@ const int ipadBreakpoint = 1024;
 const Color _kDefaultNavBarBorderColor = Color(0x4D000000);
 
 class CupertinoNavigationSplitView extends StatefulWidget {
-  final String? title;
-  final Color color;
-  final List<Widget>? sidebarItems;
-  final Widget? footer;
   final NavigationViewStyle style;
   final NavigationSplitViewVisibility visibility;
+  final CupertinoSidebar? sidebar;
+  final CupertinoSidebar content;
   final Widget detail;
 
   const CupertinoNavigationSplitView({
     Key? key,
-    required this.color,
-    this.title,
+    this.sidebar,
+    required this.content,
     this.style = NavigationViewStyle.automatic,
     this.visibility = NavigationSplitViewVisibility.automatic,
-    this.sidebarItems,
-    this.footer,
     required this.detail,
   }) : super(key: key);
 
@@ -53,7 +49,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
 
     if (orientation != newOrientation) {
       if (newOrientation == Orientation.landscape) {
-        collapsed = false;
+        collapsed = widget.sidebar != null;
       } else {
         collapsed = true;
       }
@@ -84,7 +80,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
     }
 
     return CupertinoNavigationSplitViewState(
-      color: widget.color,
+      color: widget.content.color,
       updateSelectedItem: updateSelectedItem,
       selectedItem: selectedItem,
       child: _sidebarControlWrapper(
@@ -94,11 +90,19 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
         effectiveVisibilty: effectiveVisibilty,
         child: Row(
           children: [
+            if (widget.sidebar != null) ...{
+              AnimatedSidebar(
+                width: effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn && isLandscape ? 323 : 0,
+                title: widget.sidebar!.title,
+                sidebarItems: widget.sidebar!.sidebarItems ?? [],
+                footer: widget.sidebar!.footer,
+              ),
+            },
             AnimatedSidebar(
-              width: effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn && isLandscape ? 323 : 0,
-              title: widget.title,
-              sidebarItems: widget.sidebarItems ?? [],
-              footer: widget.footer,
+              width: !isLandscape ? 0 : 323,
+              title: widget.content.title,
+              sidebarItems: widget.content.sidebarItems ?? [],
+              footer: widget.content.footer,
             ),
             Expanded(
               child: widget.detail,
@@ -159,8 +163,8 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
           ),
           AnimatedSidebar(
             width: effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn && isLandscape == false ? 323 : 0,
-            title: widget.title,
-            sidebarItems: widget.sidebarItems ?? [],
+            title: widget.content.title,
+            sidebarItems: widget.content.sidebarItems ?? [],
           ),
         ],
       );
@@ -186,41 +190,43 @@ class AnimatedSidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 320),
-      width: width,
-      decoration: BoxDecoration(
-        color: CupertinoDynamicColor.resolve(CupertinoColors.secondarySystemBackground, context),
-        border: const Border(
-          right: BorderSide(
-            color: _kDefaultNavBarBorderColor,
-            width: 0.0,
+    return ClipRect(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 320),
+        width: width,
+        decoration: BoxDecoration(
+          color: CupertinoDynamicColor.resolve(CupertinoColors.secondarySystemBackground, context),
+          border: const Border(
+            right: BorderSide(
+              color: _kDefaultNavBarBorderColor,
+              width: 0.0,
+            ),
           ),
         ),
-      ),
-      curve: Curves.easeOut,
-      child: OverflowBox(
-        minWidth: 0,
-        maxWidth: double.infinity,
-        alignment: Alignment.centerRight,
-        child: SizedBox(
-          width: 323,
-          child: Column(
-            children: [
-              Expanded(
-                child: CustomScrollView(
-                  slivers: [
-                    CupertinoNavigationSplitViewHeader(
-                      largeTitle: title,
-                    ),
-                    SliverList(
-                      delegate: SliverChildListDelegate(sidebarItems),
-                    ),
-                  ],
+        curve: Curves.easeOut,
+        child: OverflowBox(
+          minWidth: 0,
+          maxWidth: double.infinity,
+          alignment: Alignment.centerRight,
+          child: SizedBox(
+            width: 323,
+            child: Column(
+              children: [
+                Expanded(
+                  child: CustomScrollView(
+                    slivers: [
+                      CupertinoNavigationSplitViewHeader(
+                        largeTitle: title,
+                      ),
+                      SliverList(
+                        delegate: SliverChildListDelegate(sidebarItems),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              if (footer != null) ...{footer!}
-            ],
+                if (footer != null) ...{footer!}
+              ],
+            ),
           ),
         ),
       ),

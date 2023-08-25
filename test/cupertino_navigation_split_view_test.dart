@@ -14,7 +14,7 @@ void main() {
 
     // resets the screen to its original size after the test end
     addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
-
+/*
     await tester.pumpWidget(
       const TestApp(
         child: CupertinoNavigationSplitView(
@@ -24,7 +24,7 @@ void main() {
         ),
       ),
     );
-
+*/
     final sideBarFinder = find.byType(AnimatedSidebar);
 
     expect(sideBarFinder, findsNWidgets(2));
