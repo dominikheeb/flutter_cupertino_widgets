@@ -106,6 +106,7 @@ class _HomeState extends State<Home> {
                   title: "Dance",
                   icon: CupertinoIcons.list_bullet,
                   trailing: "45",
+                  showNotificationDot: true,
                   onTap: () => setState(() {
                     contentText = "Dance";
                   }),

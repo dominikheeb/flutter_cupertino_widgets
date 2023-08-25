@@ -8,6 +8,7 @@ class SidebarItem extends StatelessWidget {
   final IconData? icon;
   final Color? iconColor;
   final Function()? onTap;
+  final bool showNotificationDot;
 
   const SidebarItem({
     required this.title,
@@ -16,6 +17,7 @@ class SidebarItem extends StatelessWidget {
     this.icon,
     this.iconColor,
     this.onTap,
+    this.showNotificationDot = false,
     super.key,
   });
 
@@ -27,7 +29,7 @@ class SidebarItem extends StatelessWidget {
 
     return GestureDetector(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Container(
           decoration: BoxDecoration(
               color: isSelected ? color : CupertinoColors.white.withAlpha(0),
@@ -35,9 +37,20 @@ class SidebarItem extends StatelessWidget {
                 Radius.circular(8),
               )),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: subtitle.isEmpty ? 10.0 : 4.0),
+            padding: EdgeInsets.symmetric(vertical: subtitle.isEmpty ? 10.0 : 4.0),
             child: Row(
               children: [
+                if (showNotificationDot) ...{
+                  Container(
+                    width: 8.0,
+                    height: 8.0,
+                    decoration: BoxDecoration(
+                      color: color,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                },
+                SizedBox(width: showNotificationDot ? 6 : 14),
                 if (icon != null) ...{
                   Icon(
                     icon,
@@ -71,6 +84,9 @@ class SidebarItem extends StatelessWidget {
                     color: isSelected ? CupertinoColors.white : CupertinoColors.systemGrey,
                     fontSize: 16,
                   ),
+                ),
+                const SizedBox(
+                  width: 10,
                 )
               ],
             ),
