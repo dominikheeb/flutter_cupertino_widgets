@@ -30,6 +30,7 @@ class CupertinoNavigationSplitView extends StatefulWidget {
 
 class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitView> {
   bool collapsed = false;
+  bool sidebarCollapsed = true;
   Orientation? orientation;
   late String selectedSidebarItem;
   late String selectedContentItem;
@@ -54,6 +55,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
         collapsed = widget.sidebar != null;
       } else {
         collapsed = true;
+        sidebarCollapsed = true;
       }
 
       orientation = newOrientation;
@@ -70,7 +72,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
     } else if (isLandscape && collapsed == false) {
       effectiveVisibilty = NavigationSplitViewVisibility.doubleColumn;
     } else if (isLandscape == false && collapsed == false) {
-      effectiveVisibilty = NavigationSplitViewVisibility.doubleColumn;
+      effectiveVisibilty = sidebarCollapsed ? NavigationSplitViewVisibility.doubleColumn : NavigationSplitViewVisibility.all;
     } else {
       effectiveVisibilty = NavigationSplitViewVisibility.detailOnly;
     }
@@ -159,12 +161,19 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
           ),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 320),
-            opacity: effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn && isLandscape == false ? 1 : 0,
+            opacity: (effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn ||
+                        effectiveVisibilty == NavigationSplitViewVisibility.all) &&
+                    isLandscape == false
+                ? 1
+                : 0,
             child: IgnorePointer(
-              ignoring: effectiveVisibilty != NavigationSplitViewVisibility.doubleColumn || isLandscape == true,
+              ignoring: (effectiveVisibilty != NavigationSplitViewVisibility.doubleColumn &&
+                      effectiveVisibilty != NavigationSplitViewVisibility.all) ||
+                  isLandscape == true,
               child: GestureDetector(
                 onTap: () => setState(() {
                   collapsed = true;
+                  sidebarCollapsed = true;
                 }),
                 child: Container(
                   decoration: BoxDecoration(
@@ -174,16 +183,65 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
               ),
             ),
           ),
-          CupertinoNavigationSplitViewState(
-            color: widget.content.color,
-            updateSelectedItem: updateSelectedContentItem,
-            selectedItem: selectedContentItem,
-            child: AnimatedSidebar(
-              width: effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn && isLandscape == false ? 323 : 0,
-              title: widget.content.title,
-              sidebarItems: widget.content.sidebarItems ?? [],
-            ),
+          Row(
+            children: [
+              if (widget.sidebar != null) ...{
+                CupertinoNavigationSplitViewState(
+                  color: widget.sidebar!.color,
+                  updateSelectedItem: updateSelectedSidebarItem,
+                  selectedItem: selectedSidebarItem,
+                  child: AnimatedSidebar(
+                    width: effectiveVisibilty == NavigationSplitViewVisibility.all && isLandscape == false ? 323 : 0,
+                    title: widget.sidebar!.title,
+                    sidebarItems: widget.sidebar!.sidebarItems ?? [],
+                    footer: widget.sidebar!.footer,
+                  ),
+                ),
+              },
+              CupertinoNavigationSplitViewState(
+                color: widget.content.color,
+                updateSelectedItem: updateSelectedContentItem,
+                selectedItem: selectedContentItem,
+                child: AnimatedSidebar(
+                  width: (effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn ||
+                              effectiveVisibilty == NavigationSplitViewVisibility.all) &&
+                          isLandscape == false
+                      ? 323
+                      : 0,
+                  title: widget.content.title,
+                  sidebarItems: widget.content.sidebarItems ?? [],
+                  footer: widget.content.footer,
+                ),
+              ),
+            ],
           ),
+          if (!collapsed && !isLandscape && widget.sidebar != null && sidebarCollapsed) ...{
+            AnimatedPositioned(
+              left: 12,
+              duration: const Duration(milliseconds: 250),
+              child: SafeArea(
+                bottom: false,
+                right: false,
+                child: CupertinoButton(
+                  padding: const EdgeInsets.all(12),
+                  onPressed: () {
+                    setState(() {
+                      sidebarCollapsed = !sidebarCollapsed;
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        CupertinoIcons.chevron_back,
+                        color: CupertinoTheme.of(context).primaryColor,
+                      ),
+                      Text(widget.sidebar!.title ?? "")
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          }
         ],
       );
     }
