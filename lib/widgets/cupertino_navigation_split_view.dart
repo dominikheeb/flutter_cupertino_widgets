@@ -31,6 +31,7 @@ class CupertinoNavigationSplitView extends StatefulWidget {
 class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitView> {
   bool collapsed = false;
   bool sidebarCollapsed = true;
+  bool isInteractable = true;
   Orientation? orientation;
   late String selectedSidebarItem;
   late String selectedContentItem;
@@ -94,12 +95,19 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
     void updateSelectedSidebarItem(String updatedSelectedItem) {
       setState(() {
         selectedSidebarItem = updatedSelectedItem;
+        if (!isLandscape) {
+          sidebarCollapsed = true;
+        }
       });
     }
 
     void updateSelectedContentItem(String updatedSelectedItem) {
       setState(() {
         selectedContentItem = updatedSelectedItem;
+        if (!isLandscape) {
+          sidebarCollapsed = true;
+          collapsed = true;
+        }
       });
     }
 
