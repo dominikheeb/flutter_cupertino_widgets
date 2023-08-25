@@ -31,12 +31,14 @@ class CupertinoNavigationSplitView extends StatefulWidget {
 class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitView> {
   bool collapsed = false;
   Orientation? orientation;
-  late String selectedItem;
+  late String selectedSidebarItem;
+  late String selectedContentItem;
 
   @override
   void initState() {
     super.initState();
-    selectedItem = "";
+    selectedSidebarItem = "";
+    selectedContentItem = "";
   }
 
   @override
@@ -73,53 +75,64 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
       effectiveVisibilty = NavigationSplitViewVisibility.detailOnly;
     }
 
-    void updateSelectedItem(String updatedSelectedItem) {
-      setState(() {
-        selectedItem = updatedSelectedItem;
-      });
-    }
-
-    return CupertinoNavigationSplitViewState(
-      color: widget.content.color,
-      updateSelectedItem: updateSelectedItem,
-      selectedItem: selectedItem,
-      child: _sidebarControlWrapper(
-        context: context,
-        isTablet: isTablet,
-        isLandscape: isLandscape,
-        effectiveVisibilty: effectiveVisibilty,
-        child: Row(
-          children: [
-            if (widget.sidebar != null) ...{
-              AnimatedSidebar(
-                width: effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn && isLandscape ? 323 : 0,
-                title: widget.sidebar!.title,
-                sidebarItems: widget.sidebar!.sidebarItems ?? [],
-                footer: widget.sidebar!.footer,
-              ),
-            },
-            AnimatedSidebar(
-              width: !isLandscape ? 0 : 323,
-              title: widget.content.title,
-              sidebarItems: widget.content.sidebarItems ?? [],
-              footer: widget.content.footer,
-            ),
-            Expanded(
-              child: widget.detail,
-            ),
-          ],
-        ),
-      ),
+    return _sidebarControlWrapper(
+      context: context,
+      isTablet: isTablet,
+      isLandscape: isLandscape,
+      effectiveVisibilty: effectiveVisibilty,
     );
   }
 
   Widget _sidebarControlWrapper({
     required bool isTablet,
-    required Widget child,
     required bool isLandscape,
     required BuildContext context,
     required NavigationSplitViewVisibility effectiveVisibilty,
   }) {
+    void updateSelectedSidebarItem(String updatedSelectedItem) {
+      setState(() {
+        selectedSidebarItem = updatedSelectedItem;
+      });
+    }
+
+    void updateSelectedContentItem(String updatedSelectedItem) {
+      setState(() {
+        selectedContentItem = updatedSelectedItem;
+      });
+    }
+
+    final child = Row(
+      children: [
+        if (widget.sidebar != null) ...{
+          CupertinoNavigationSplitViewState(
+            color: widget.content.color,
+            updateSelectedItem: updateSelectedSidebarItem,
+            selectedItem: selectedSidebarItem,
+            child: AnimatedSidebar(
+              width: effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn && isLandscape ? 323 : 0,
+              title: widget.sidebar!.title,
+              sidebarItems: widget.sidebar!.sidebarItems ?? [],
+              footer: widget.sidebar!.footer,
+            ),
+          )
+        },
+        CupertinoNavigationSplitViewState(
+          color: widget.content.color,
+          updateSelectedItem: updateSelectedContentItem,
+          selectedItem: selectedContentItem,
+          child: AnimatedSidebar(
+            width: !isLandscape ? 0 : 323,
+            title: widget.content.title,
+            sidebarItems: widget.content.sidebarItems ?? [],
+            footer: widget.content.footer,
+          ),
+        ),
+        Expanded(
+          child: widget.detail,
+        ),
+      ],
+    );
+
     if (isTablet) {
       return Stack(
         children: [
@@ -161,10 +174,15 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
               ),
             ),
           ),
-          AnimatedSidebar(
-            width: effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn && isLandscape == false ? 323 : 0,
-            title: widget.content.title,
-            sidebarItems: widget.content.sidebarItems ?? [],
+          CupertinoNavigationSplitViewState(
+            color: widget.content.color,
+            updateSelectedItem: updateSelectedContentItem,
+            selectedItem: selectedContentItem,
+            child: AnimatedSidebar(
+              width: effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn && isLandscape == false ? 323 : 0,
+              title: widget.content.title,
+              sidebarItems: widget.content.sidebarItems ?? [],
+            ),
           ),
         ],
       );
