@@ -3,8 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 
 const Color _kDefaultNavBarBorderColor = Color(0x4D000000);
-const CupertinoDynamicColor _kDefaultNavBarHeaderColor =
-    CupertinoDynamicColor.withBrightness(
+const CupertinoDynamicColor _kDefaultNavBarHeaderColor = CupertinoDynamicColor.withBrightness(
   color: Color(0xF0F9F9F9),
   darkColor: Color(0xF01D1D1D),
 );
@@ -23,8 +22,7 @@ class CupertinoNavigationSplitViewHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final largeTitleStyle =
-        CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle;
+    final largeTitleStyle = CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle;
 
     return SliverPersistentHeader(
       pinned: true,
@@ -38,8 +36,7 @@ class CupertinoNavigationSplitViewHeader extends StatelessWidget {
   }
 }
 
-class _CupertinoNavigationSplitViewHeaderDelegate
-    extends SliverPersistentHeaderDelegate {
+class _CupertinoNavigationSplitViewHeaderDelegate extends SliverPersistentHeaderDelegate {
   final double headerHeight;
   final TextStyle largeTitleStyle;
   final double largeTitlePadding = 6;
@@ -47,9 +44,7 @@ class _CupertinoNavigationSplitViewHeaderDelegate
   final String? largeTitle;
 
   double get largeTitleHeight => largeTitle != null && largeTitle!.isNotEmpty
-      ? ((largeTitleStyle.fontSize ?? 24) + (largeTitleStyle.height ?? 1)) +
-          1 +
-          2 * largeTitlePadding
+      ? ((largeTitleStyle.fontSize ?? 24) + (largeTitleStyle.height ?? 1)) + 1 + 2 * largeTitlePadding
       : 0;
 
   _CupertinoNavigationSplitViewHeaderDelegate({
@@ -60,8 +55,7 @@ class _CupertinoNavigationSplitViewHeaderDelegate
   });
 
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     var value = shrinkOffset - largeTitleHeight - 6;
 
     var length = 12;
@@ -118,9 +112,7 @@ class _CupertinoNavigationSplitViewHeaderDelegate
                         alignment: Alignment.bottomCenter,
                         child: Text(
                           largeTitle!,
-                          style: CupertinoTheme.of(context)
-                              .textTheme
-                              .navTitleTextStyle,
+                          style: CupertinoTheme.of(context).textTheme.navTitleTextStyle,
                         ),
                       ),
                     ),
@@ -143,7 +135,8 @@ class _CupertinoNavigationSplitViewHeaderDelegate
                 alignment: AlignmentDirectional.bottomStart,
                 child: Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: largeTitleHorizontalPadding),
+                    horizontal: largeTitleHorizontalPadding,
+                  ),
                   child: Text(
                     largeTitle!,
                     style: largeTitleStyle,
@@ -164,6 +157,5 @@ class _CupertinoNavigationSplitViewHeaderDelegate
   double get minExtent => headerHeight;
 
   @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      true;
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
 }

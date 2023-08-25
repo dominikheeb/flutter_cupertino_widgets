@@ -40,7 +40,7 @@ class _SidebarItemGroupState extends State<SidebarItemGroup> with SingleTickerPr
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 16.0, bottom: 4),
+          padding: const EdgeInsets.only(top: 16.0, bottom: 10),
           child: GestureDetector(
             child: Row(
               children: [
@@ -51,7 +51,7 @@ class _SidebarItemGroupState extends State<SidebarItemGroup> with SingleTickerPr
                       widget.title,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: 20,
                       ),
                     ),
                   ),
