@@ -29,33 +29,27 @@ class CupertinoNavigationSplitView extends StatefulWidget {
 }
 
 class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitView> {
-  bool collapsed = false;
+  bool contentCollapsed = false;
   bool sidebarCollapsed = true;
   bool isInteractable = true;
   Orientation? orientation;
-  late String selectedSidebarItem;
-  late String selectedContentItem;
+  String selectedSidebarItem = "";
+  String selectedContentItem = "";
 
   @override
   void initState() {
     super.initState();
-    selectedSidebarItem = "";
-    selectedContentItem = "";
   }
 
   @override
   Widget build(BuildContext context) {
-    // var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size;
-    log(height.toString());
-
     var newOrientation = MediaQuery.of(context).orientation;
 
     if (orientation != newOrientation) {
       if (newOrientation == Orientation.landscape) {
-        collapsed = widget.sidebar != null;
+        contentCollapsed = widget.sidebar != null;
       } else {
-        collapsed = true;
+        contentCollapsed = true;
         sidebarCollapsed = true;
       }
 
@@ -70,9 +64,9 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
 
     if (widget.visibility != NavigationSplitViewVisibility.automatic) {
       effectiveVisibilty = widget.visibility;
-    } else if (isLandscape && collapsed == false) {
+    } else if (isLandscape && contentCollapsed == false) {
       effectiveVisibilty = NavigationSplitViewVisibility.doubleColumn;
-    } else if (isLandscape == false && collapsed == false) {
+    } else if (isLandscape == false && contentCollapsed == false) {
       effectiveVisibilty = sidebarCollapsed ? NavigationSplitViewVisibility.doubleColumn : NavigationSplitViewVisibility.all;
     } else {
       effectiveVisibilty = NavigationSplitViewVisibility.detailOnly;
@@ -106,7 +100,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
         selectedContentItem = updatedSelectedItem;
         if (!isLandscape) {
           sidebarCollapsed = true;
-          collapsed = true;
+          contentCollapsed = true;
         }
       });
     }
@@ -131,7 +125,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
           updateSelectedItem: updateSelectedContentItem,
           selectedItem: selectedContentItem,
           child: AnimatedSidebar(
-            width: !isLandscape ? 0 : 323,
+            width: !isLandscape || (contentCollapsed && widget.sidebar == null) ? 0 : 323,
             title: widget.content.title,
             sidebarItems: widget.content.sidebarItems ?? [],
             footer: widget.content.footer,
@@ -148,7 +142,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
         children: [
           child,
           AnimatedPositioned(
-            left: collapsed ? 10 : 12,
+            left: contentCollapsed ? 10 : 12,
             duration: const Duration(milliseconds: 250),
             child: SafeArea(
               bottom: false,
@@ -157,7 +151,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
                 padding: const EdgeInsets.all(12),
                 onPressed: () {
                   setState(() {
-                    collapsed = !collapsed;
+                    contentCollapsed = !contentCollapsed;
                   });
                 },
                 child: Icon(
@@ -180,7 +174,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
                   isLandscape == true,
               child: GestureDetector(
                 onTap: () => setState(() {
-                  collapsed = true;
+                  contentCollapsed = true;
                   sidebarCollapsed = true;
                 }),
                 child: Container(
@@ -223,7 +217,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
               ),
             ],
           ),
-          if (!collapsed && !isLandscape && widget.sidebar != null && sidebarCollapsed) ...{
+          if (!contentCollapsed && !isLandscape && widget.sidebar != null && sidebarCollapsed) ...{
             AnimatedPositioned(
               left: 12,
               duration: const Duration(milliseconds: 250),
