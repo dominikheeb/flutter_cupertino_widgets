@@ -117,6 +117,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
               title: widget.sidebar!.title,
               sidebarItems: widget.sidebar!.sidebarItems ?? [],
               footer: widget.sidebar!.footer,
+              trailing: widget.sidebar!.trailing,
             ),
           )
         },
@@ -129,6 +130,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
             title: widget.content.title,
             sidebarItems: widget.content.sidebarItems ?? [],
             footer: widget.content.footer,
+            trailing: widget.content.trailing,
           ),
         ),
         Expanded(
@@ -197,6 +199,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
                     title: widget.sidebar!.title,
                     sidebarItems: widget.sidebar!.sidebarItems ?? [],
                     footer: widget.sidebar!.footer,
+                    trailing: widget.sidebar!.trailing,
                   ),
                 ),
               },
@@ -213,6 +216,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
                   title: widget.content.title,
                   sidebarItems: widget.content.sidebarItems ?? [],
                   footer: widget.content.footer,
+                  trailing: widget.content.trailing,
                 ),
               ),
             ],
@@ -257,6 +261,7 @@ class AnimatedSidebar extends StatelessWidget {
   final String? title;
   final List<Widget> sidebarItems;
   final Widget? footer;
+  final Widget? trailing;
 
   const AnimatedSidebar({
     Key? key,
@@ -264,6 +269,7 @@ class AnimatedSidebar extends StatelessWidget {
     required this.sidebarItems,
     this.title,
     this.footer,
+    this.trailing,
   }) : super(key: key);
 
   @override
@@ -295,6 +301,7 @@ class AnimatedSidebar extends StatelessWidget {
                     slivers: [
                       CupertinoNavigationSplitViewHeader(
                         largeTitle: title,
+                        trailing: trailing,
                       ),
                       SliverList(
                         delegate: SliverChildListDelegate(sidebarItems),

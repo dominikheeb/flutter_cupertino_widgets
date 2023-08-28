@@ -42,6 +42,7 @@ class _HomeState extends State<Home> {
         content: CupertinoSidebar(
           title: "Music",
           color: CupertinoColors.systemOrange,
+          trailing: const Icon(CupertinoIcons.settings),
           sidebarItems: [
             SidebarItem(
               title: "Listen Now",
