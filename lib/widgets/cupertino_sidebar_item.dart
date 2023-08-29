@@ -62,6 +62,7 @@ class SidebarItem extends StatelessWidget {
                         icon,
                         color: isSelected ? CupertinoColors.white : color,
                       ),
+                      const SizedBox(width: 12),
                     },
                     if (iconColor != null) ...{
                       Container(
@@ -75,10 +76,10 @@ class SidebarItem extends StatelessWidget {
                           icon,
                           color: CupertinoColors.white,
                         ),
-                      )
+                      ),
+                      const SizedBox(width: 8),
                     }
                   },
-                  const SizedBox(width: 8),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
