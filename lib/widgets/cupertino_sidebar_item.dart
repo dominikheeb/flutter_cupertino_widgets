@@ -60,6 +60,7 @@ class SidebarItem extends StatelessWidget {
                     if (iconColor == null) ...{
                       Icon(
                         icon,
+                        size: 24,
                         color: isSelected ? CupertinoColors.white : color,
                       ),
                       const SizedBox(width: 12),
@@ -74,6 +75,7 @@ class SidebarItem extends StatelessWidget {
                             )),
                         child: Icon(
                           icon,
+                          size: 20,
                           color: CupertinoColors.white,
                         ),
                       ),
