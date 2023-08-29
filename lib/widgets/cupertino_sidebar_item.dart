@@ -45,14 +45,14 @@ class SidebarItem extends StatelessWidget {
         },
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 14),
-          child: Container(
-            decoration: BoxDecoration(
-                color: isSelected ? color : CupertinoColors.white.withAlpha(0),
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(8),
-                )),
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: subtitle.isEmpty ? 10.0 : 4.0),
+          child: SizedBox(
+            height: 42,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: isSelected ? color : CupertinoColors.white.withAlpha(0),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(8),
+                  )),
               child: Row(
                 children: [
                   const SizedBox(width: 8),
@@ -82,6 +82,7 @@ class SidebarItem extends StatelessWidget {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           title,
