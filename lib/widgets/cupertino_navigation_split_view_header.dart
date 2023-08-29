@@ -16,7 +16,7 @@ class CupertinoNavigationSplitViewHeader extends StatelessWidget {
 
   const CupertinoNavigationSplitViewHeader({
     Key? key,
-    this.headerHeight = 72,
+    this.headerHeight = 76,
     this.largeTitleHorizontalPadding = 24,
     this.largeTitle,
     this.trailing,
@@ -139,8 +139,10 @@ class _CupertinoNavigationSplitViewHeaderDelegate extends SliverPersistentHeader
                 maxHeight: double.infinity,
                 alignment: AlignmentDirectional.bottomStart,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: largeTitleHorizontalPadding,
+                  padding: EdgeInsets.only(
+                    left: largeTitleHorizontalPadding,
+                    bottom: 4,
+                    right: largeTitleHorizontalPadding,
                   ),
                   child: Text(
                     largeTitle!,

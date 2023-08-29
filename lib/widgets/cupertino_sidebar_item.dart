@@ -46,7 +46,7 @@ class SidebarItem extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 14),
           child: SizedBox(
-            height: 42,
+            height: 48,
             child: Container(
               decoration: BoxDecoration(
                   color: isSelected ? color : CupertinoColors.white.withAlpha(0),
