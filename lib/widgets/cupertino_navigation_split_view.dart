@@ -32,7 +32,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
   bool contentCollapsed = false;
   bool sidebarCollapsed = true;
   bool isInteractable = true;
-  Orientation? orientation;
+  Orientation? previousOrientation;
   late String selectedSidebarItem;
   late String selectedContentItem;
 
@@ -45,41 +45,41 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
 
   @override
   Widget build(BuildContext context) {
-    var newOrientation = MediaQuery.of(context).orientation;
+    return OrientationBuilder(builder: (context, orientation) {
+      if (previousOrientation != orientation) {
+        if (orientation == Orientation.landscape) {
+          contentCollapsed = widget.sidebar != null;
+        } else {
+          contentCollapsed = true;
+          sidebarCollapsed = true;
+        }
 
-    if (orientation != newOrientation) {
-      if (newOrientation == Orientation.landscape) {
-        contentCollapsed = widget.sidebar != null;
-      } else {
-        contentCollapsed = true;
-        sidebarCollapsed = true;
+        previousOrientation = orientation;
       }
 
-      orientation = newOrientation;
-    }
+      var isTablet = true; // TODO: dynamic
+      final isLandscape = previousOrientation == Orientation.landscape;
+      NavigationSplitViewVisibility effectiveVisibilty;
 
-    var isTablet = true; // TODO: dynamic
-    final isLandscape = orientation == Orientation.landscape;
-    NavigationSplitViewVisibility effectiveVisibilty;
+      log("isLandscape $isLandscape");
 
-    log("isLandscape $isLandscape");
+      if (widget.visibility != NavigationSplitViewVisibility.automatic) {
+        effectiveVisibilty = widget.visibility;
+      } else if (isLandscape && contentCollapsed == false) {
+        effectiveVisibilty = NavigationSplitViewVisibility.doubleColumn;
+      } else if (isLandscape == false && contentCollapsed == false) {
+        effectiveVisibilty = sidebarCollapsed ? NavigationSplitViewVisibility.doubleColumn : NavigationSplitViewVisibility.all;
+      } else {
+        effectiveVisibilty = NavigationSplitViewVisibility.detailOnly;
+      }
 
-    if (widget.visibility != NavigationSplitViewVisibility.automatic) {
-      effectiveVisibilty = widget.visibility;
-    } else if (isLandscape && contentCollapsed == false) {
-      effectiveVisibilty = NavigationSplitViewVisibility.doubleColumn;
-    } else if (isLandscape == false && contentCollapsed == false) {
-      effectiveVisibilty = sidebarCollapsed ? NavigationSplitViewVisibility.doubleColumn : NavigationSplitViewVisibility.all;
-    } else {
-      effectiveVisibilty = NavigationSplitViewVisibility.detailOnly;
-    }
-
-    return _sidebarControlWrapper(
-      context: context,
-      isTablet: isTablet,
-      isLandscape: isLandscape,
-      effectiveVisibilty: effectiveVisibilty,
-    );
+      return _sidebarControlWrapper(
+        context: context,
+        isTablet: isTablet,
+        isLandscape: isLandscape,
+        effectiveVisibilty: effectiveVisibilty,
+      );
+    });
   }
 
   Widget _sidebarControlWrapper({
@@ -91,7 +91,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
     void updateSelectedSidebarItem(String updatedSelectedItem) {
       setState(() {
         selectedSidebarItem = updatedSelectedItem;
-        if (!isLandscape) {
+        if (MediaQuery.of(context).orientation == Orientation.portrait) {
           sidebarCollapsed = true;
         }
       });
@@ -100,7 +100,8 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
     void updateSelectedContentItem(String updatedSelectedItem) {
       setState(() {
         selectedContentItem = updatedSelectedItem;
-        if (!isLandscape) {
+        log("build lands: $isLandscape");
+        if (MediaQuery.of(context).orientation == Orientation.portrait) {
           sidebarCollapsed = true;
           contentCollapsed = true;
         }
