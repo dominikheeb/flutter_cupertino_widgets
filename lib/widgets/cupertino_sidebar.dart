@@ -6,6 +6,7 @@ class CupertinoSidebar {
   final String? title;
   final Widget? footer;
   final Widget? trailing;
+  final String? defaultSelection;
 
   CupertinoSidebar({
     required this.sidebarItems,
@@ -13,5 +14,6 @@ class CupertinoSidebar {
     this.title,
     this.footer,
     this.trailing,
+    this.defaultSelection,
   });
 }

@@ -33,12 +33,14 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
   bool sidebarCollapsed = true;
   bool isInteractable = true;
   Orientation? orientation;
-  String selectedSidebarItem = "";
-  String selectedContentItem = "";
+  late String selectedSidebarItem;
+  late String selectedContentItem;
 
   @override
   void initState() {
     super.initState();
+    selectedSidebarItem = widget.sidebar?.defaultSelection ?? "";
+    selectedContentItem = widget.content.defaultSelection ?? "";
   }
 
   @override
