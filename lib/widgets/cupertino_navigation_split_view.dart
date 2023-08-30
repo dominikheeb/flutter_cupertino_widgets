@@ -50,7 +50,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
         if (orientation == Orientation.landscape) {
           contentCollapsed = widget.sidebar != null;
         } else {
-          contentCollapsed = true;
+          contentCollapsed = !widget.content.disableCollapsing;
           sidebarCollapsed = true;
         }
 
@@ -117,10 +117,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
             selectedItem: selectedSidebarItem,
             child: AnimatedSidebar(
               width: effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn && isLandscape ? 323 : 0,
-              title: widget.sidebar!.title,
-              sidebarItems: widget.sidebar!.sidebarItems ?? [],
-              footer: widget.sidebar!.footer,
-              trailing: widget.sidebar!.trailing,
+              sidebar: widget.sidebar!,
             ),
           )
         },
@@ -130,10 +127,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
           selectedItem: selectedContentItem,
           child: AnimatedSidebar(
             width: !isLandscape || (contentCollapsed && widget.sidebar == null) ? 0 : 323,
-            title: widget.content.title,
-            sidebarItems: widget.content.sidebarItems ?? [],
-            footer: widget.content.footer,
-            trailing: widget.content.trailing,
+            sidebar: widget.content,
           ),
         ),
         Expanded(
@@ -146,26 +140,28 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
       return Stack(
         children: [
           child,
-          AnimatedPositioned(
-            left: contentCollapsed ? 10 : 12,
-            duration: const Duration(milliseconds: 250),
-            child: SafeArea(
-              bottom: false,
-              right: false,
-              child: CupertinoButton(
-                padding: const EdgeInsets.all(12),
-                onPressed: () {
-                  setState(() {
-                    contentCollapsed = !contentCollapsed;
-                  });
-                },
-                child: Icon(
-                  CupertinoIcons.sidebar_left,
-                  color: CupertinoTheme.of(context).primaryColor,
+          if (!widget.content.disableCollapsing) ...{
+            AnimatedPositioned(
+              left: contentCollapsed ? 10 : 12,
+              duration: const Duration(milliseconds: 250),
+              child: SafeArea(
+                bottom: false,
+                right: false,
+                child: CupertinoButton(
+                  padding: const EdgeInsets.all(12),
+                  onPressed: () {
+                    setState(() {
+                      contentCollapsed = !contentCollapsed;
+                    });
+                  },
+                  child: Icon(
+                    CupertinoIcons.sidebar_left,
+                    color: CupertinoTheme.of(context).primaryColor,
+                  ),
                 ),
               ),
             ),
-          ),
+          },
           AnimatedOpacity(
             duration: const Duration(milliseconds: 320),
             opacity: (effectiveVisibilty == NavigationSplitViewVisibility.doubleColumn ||
@@ -199,10 +195,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
                   selectedItem: selectedSidebarItem,
                   child: AnimatedSidebar(
                     width: effectiveVisibilty == NavigationSplitViewVisibility.all && isLandscape == false ? 323 : 0,
-                    title: widget.sidebar!.title,
-                    sidebarItems: widget.sidebar!.sidebarItems ?? [],
-                    footer: widget.sidebar!.footer,
-                    trailing: widget.sidebar!.trailing,
+                    sidebar: widget.sidebar!,
                   ),
                 ),
               },
@@ -216,10 +209,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
                           isLandscape == false
                       ? 323
                       : 0,
-                  title: widget.content.title,
-                  sidebarItems: widget.content.sidebarItems ?? [],
-                  footer: widget.content.footer,
-                  trailing: widget.content.trailing,
+                  sidebar: widget.content,
                 ),
               ),
             ],
@@ -261,18 +251,12 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
 
 class AnimatedSidebar extends StatelessWidget {
   final double width;
-  final String? title;
-  final List<Widget> sidebarItems;
-  final Widget? footer;
-  final Widget? trailing;
+  final CupertinoSidebar sidebar;
 
   const AnimatedSidebar({
     Key? key,
     required this.width,
-    required this.sidebarItems,
-    this.title,
-    this.footer,
-    this.trailing,
+    required this.sidebar,
   }) : super(key: key);
 
   @override
@@ -303,16 +287,16 @@ class AnimatedSidebar extends StatelessWidget {
                   child: CustomScrollView(
                     slivers: [
                       CupertinoNavigationSplitViewHeader(
-                        largeTitle: title,
-                        trailing: trailing,
+                        largeTitle: sidebar.title,
+                        trailing: sidebar.trailing,
                       ),
                       SliverList(
-                        delegate: SliverChildListDelegate(sidebarItems),
+                        delegate: SliverChildListDelegate(sidebar.sidebarItems),
                       ),
                     ],
                   ),
                 ),
-                if (footer != null) ...{footer!}
+                if (sidebar.footer != null) ...{sidebar.footer!}
               ],
             ),
           ),

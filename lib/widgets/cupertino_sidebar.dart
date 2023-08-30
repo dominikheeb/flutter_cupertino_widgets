@@ -7,6 +7,7 @@ class CupertinoSidebar {
   final Widget? footer;
   final Widget? trailing;
   final String? defaultSelection;
+  final bool disableCollapsing;
 
   CupertinoSidebar({
     required this.sidebarItems,
@@ -15,5 +16,6 @@ class CupertinoSidebar {
     this.footer,
     this.trailing,
     this.defaultSelection,
+    this.disableCollapsing = false,
   });
 }
