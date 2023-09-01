@@ -89,7 +89,8 @@ class SidebarItem extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          style: TextStyle(color: isSelected ? CupertinoColors.white : CupertinoColors.black),
+                          style:
+                              TextStyle(color: isSelected ? CupertinoColors.white : CupertinoTheme.of(context).textTheme.textStyle.color),
                         ),
                         if (subtitle.isNotEmpty) ...{
                           Text(
