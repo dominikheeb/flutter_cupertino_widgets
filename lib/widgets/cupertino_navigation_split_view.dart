@@ -49,9 +49,10 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
           contentCollapsed = widget.sidebar != null;
         } else {
           contentCollapsed = !widget.content.disableCollapsing;
-          widget.content.onToggleIsCollapsed?.call(contentCollapsed);
           sidebarCollapsed = true;
         }
+
+        widget.content.onToggleIsCollapsed?.call(contentCollapsed);
 
         previousOrientation = orientation;
       }
