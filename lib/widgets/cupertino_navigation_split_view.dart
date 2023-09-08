@@ -146,7 +146,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
                   padding: const EdgeInsets.all(12),
                   onPressed: () {
                     setState(() {
-                      widget.content.onToggleIsCollapsed?.call(contentCollapsed);
+                      widget.content.onToggleIsCollapsed?.call(!contentCollapsed);
                       contentCollapsed = !contentCollapsed;
                     });
                   },
