@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_cupertino_widgets/flutter_cupertino_widgets.dart';
+import 'dart:developer';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -43,6 +44,7 @@ class _HomeState extends State<Home> {
           title: "Music",
           color: CupertinoColors.systemOrange,
           trailing: const Icon(CupertinoIcons.settings),
+          onToggleIsCollapsed: (isCollapsed) => log("isCollapsed: ${isCollapsed.toString()}"),
           sidebarItems: [
             SidebarItem(
               title: "Listen Now",

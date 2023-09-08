@@ -8,6 +8,7 @@ class CupertinoSidebar {
   final Widget? trailing;
   final String? defaultSelection;
   final bool disableCollapsing;
+  final Function(bool isCollapsed)? onToggleIsCollapsed;
 
   CupertinoSidebar({
     required this.sidebarItems,
@@ -17,5 +18,6 @@ class CupertinoSidebar {
     this.trailing,
     this.defaultSelection,
     this.disableCollapsing = false,
+    this.onToggleIsCollapsed,
   });
 }

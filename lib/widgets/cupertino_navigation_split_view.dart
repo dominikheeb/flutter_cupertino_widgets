@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_cupertino_widgets/flutter_cupertino_widgets.dart';
 
@@ -61,8 +59,6 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
       final isLandscape = previousOrientation == Orientation.landscape;
       NavigationSplitViewVisibility effectiveVisibilty;
 
-      log("isLandscape $isLandscape");
-
       if (widget.visibility != NavigationSplitViewVisibility.automatic) {
         effectiveVisibilty = widget.visibility;
       } else if (isLandscape && contentCollapsed == false) {
@@ -100,7 +96,6 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
     void updateSelectedContentItem(String updatedSelectedItem) {
       setState(() {
         selectedContentItem = updatedSelectedItem;
-        log("build lands: $isLandscape");
         if (MediaQuery.of(context).orientation == Orientation.portrait) {
           sidebarCollapsed = true;
           contentCollapsed = true;
@@ -151,6 +146,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
                   padding: const EdgeInsets.all(12),
                   onPressed: () {
                     setState(() {
+                      widget.content.onToggleIsCollapsed?.call(contentCollapsed);
                       contentCollapsed = !contentCollapsed;
                     });
                   },
