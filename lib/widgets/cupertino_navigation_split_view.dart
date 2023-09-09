@@ -91,6 +91,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
         selectedSidebarItem = updatedSelectedItem;
         if (MediaQuery.of(context).orientation == Orientation.portrait) {
           sidebarCollapsed = true;
+          widget.content.onToggleIsCollapsed?.call(contentCollapsed);
         }
       });
     }
@@ -101,6 +102,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
         if (MediaQuery.of(context).orientation == Orientation.portrait) {
           sidebarCollapsed = true;
           contentCollapsed = true;
+          widget.content.onToggleIsCollapsed?.call(contentCollapsed);
         }
       });
     }
