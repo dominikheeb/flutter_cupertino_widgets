@@ -160,8 +160,8 @@ class _CupertinoNavigationSplitViewHeaderDelegate extends SliverPersistentHeader
         },
         if (leading != null) ...{
           Positioned(
-            top: 36,
-            left: 20,
+            top: 0,
+            left: 0,
             child: leading!,
           ),
         },
