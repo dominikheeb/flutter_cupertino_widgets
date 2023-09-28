@@ -13,6 +13,7 @@ class CupertinoNavigationSplitViewHeader extends StatelessWidget {
   final double largeTitleHorizontalPadding;
   final String? largeTitle;
   final Widget? trailing;
+  final Widget? leading;
 
   const CupertinoNavigationSplitViewHeader({
     Key? key,
@@ -20,6 +21,7 @@ class CupertinoNavigationSplitViewHeader extends StatelessWidget {
     this.largeTitleHorizontalPadding = 24,
     this.largeTitle,
     this.trailing,
+    this.leading,
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class CupertinoNavigationSplitViewHeader extends StatelessWidget {
         largeTitleHorizontalPadding: largeTitleHorizontalPadding,
         largeTitle: largeTitle,
         trailing: trailing,
+        leading: leading,
       ),
     );
   }
@@ -46,6 +49,7 @@ class _CupertinoNavigationSplitViewHeaderDelegate extends SliverPersistentHeader
   final double largeTitleHorizontalPadding;
   final String? largeTitle;
   final Widget? trailing;
+  final Widget? leading;
 
   double get largeTitleHeight => largeTitle != null && largeTitle!.isNotEmpty
       ? ((largeTitleStyle.fontSize ?? 24) + (largeTitleStyle.height ?? 1)) + 1 + 2 * largeTitlePadding
@@ -57,6 +61,7 @@ class _CupertinoNavigationSplitViewHeaderDelegate extends SliverPersistentHeader
     required this.largeTitleHorizontalPadding,
     this.largeTitle,
     this.trailing,
+    this.leading,
   });
 
   @override
@@ -151,6 +156,13 @@ class _CupertinoNavigationSplitViewHeaderDelegate extends SliverPersistentHeader
                 ),
               ),
             ),
+          ),
+        },
+        if (leading != null) ...{
+          Positioned(
+            top: 36,
+            left: 20,
+            child: leading!,
           ),
         },
         if (trailing != null) ...{
