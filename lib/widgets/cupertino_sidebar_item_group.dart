@@ -50,7 +50,7 @@ class _SidebarItemGroupState extends State<SidebarItemGroup> with SingleTickerPr
                     child: Text(
                       widget.title,
                       style: const TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                         fontSize: 20,
                       ),
                     ),

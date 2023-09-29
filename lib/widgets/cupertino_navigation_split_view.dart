@@ -290,7 +290,6 @@ class AnimatedSidebar extends StatelessWidget {
                         largeTitle: sidebar.title,
                         trailing: sidebar.trailing,
                       ),
-                      const SliverPadding(padding: EdgeInsets.only(top: 4)),
                       SliverList(
                         delegate: SliverChildListDelegate(sidebar.sidebarItems),
                       ),
