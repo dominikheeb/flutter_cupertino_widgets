@@ -1,6 +1,7 @@
 name: flutter_cupertino_widgets
 description: A new Flutter package project.
-version: 0.0.5
+
+version: 0.0.6
 homepage:
 
 environment:

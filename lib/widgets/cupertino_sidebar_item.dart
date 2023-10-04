@@ -31,7 +31,7 @@ class SidebarItem extends StatelessWidget {
       child: Stack(children: [
         if (showNotificationDot && !isSelected) ...{
           Positioned(
-            top: 22,
+            top: 18,
             left: 8,
             child: Container(
               width: 8.0,
@@ -44,14 +44,14 @@ class SidebarItem extends StatelessWidget {
           ),
         },
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 14),
           child: SizedBox(
-            height: 52,
+            height: 48,
             child: Container(
               decoration: BoxDecoration(
                   color: isSelected ? color : CupertinoColors.white.withAlpha(0),
                   borderRadius: const BorderRadius.all(
-                    Radius.circular(11),
+                    Radius.circular(8),
                   )),
               child: Row(
                 children: [
@@ -60,10 +60,10 @@ class SidebarItem extends StatelessWidget {
                     if (iconColor == null) ...{
                       Icon(
                         icon,
-                        size: 28,
+                        size: 24,
                         color: isSelected ? CupertinoColors.white : color,
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 12),
                     },
                     if (iconColor != null) ...{
                       Container(
@@ -75,11 +75,11 @@ class SidebarItem extends StatelessWidget {
                             )),
                         child: Icon(
                           icon,
-                          size: 24,
+                          size: 20,
                           color: CupertinoColors.white,
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 8),
                     }
                   },
                   Expanded(
@@ -89,10 +89,8 @@ class SidebarItem extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          style: TextStyle(
-                            color: isSelected ? CupertinoColors.white : CupertinoTheme.of(context).textTheme.textStyle.color,
-                            fontSize: 17,
-                          ),
+                          style:
+                              TextStyle(color: isSelected ? CupertinoColors.white : CupertinoTheme.of(context).textTheme.textStyle.color),
                         ),
                         if (subtitle.isNotEmpty) ...{
                           Text(
@@ -110,7 +108,7 @@ class SidebarItem extends StatelessWidget {
                     trailing,
                     style: TextStyle(
                       color: isSelected ? CupertinoColors.white : CupertinoColors.systemGrey,
-                      fontSize: 17,
+                      fontSize: 14,
                     ),
                   ),
                   const SizedBox(
