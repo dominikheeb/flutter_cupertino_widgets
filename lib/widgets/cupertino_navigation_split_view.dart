@@ -12,15 +12,17 @@ class CupertinoNavigationSplitView extends StatefulWidget {
   final CupertinoSidebar? sidebar;
   final CupertinoSidebar content;
   final Widget detail;
+  final EdgeInsetsGeometry sidebarIconPadding;
 
-  const CupertinoNavigationSplitView({
-    Key? key,
-    this.sidebar,
-    required this.content,
-    this.style = NavigationViewStyle.automatic,
-    this.visibility = NavigationSplitViewVisibility.automatic,
-    required this.detail,
-  }) : super(key: key);
+  const CupertinoNavigationSplitView(
+      {Key? key,
+      this.sidebar,
+      required this.content,
+      this.style = NavigationViewStyle.automatic,
+      this.visibility = NavigationSplitViewVisibility.automatic,
+      required this.detail,
+      this.sidebarIconPadding = const EdgeInsets.all(0)})
+      : super(key: key);
 
   @override
   State<CupertinoNavigationSplitView> createState() => _CupertinoNavigationSplitViewState();
@@ -154,9 +156,12 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
                       contentCollapsed = !contentCollapsed;
                     });
                   },
-                  child: Icon(
-                    CupertinoIcons.sidebar_left,
-                    color: CupertinoTheme.of(context).primaryColor,
+                  child: Padding(
+                    padding: widget.sidebarIconPadding,
+                    child: Icon(
+                      CupertinoIcons.sidebar_left,
+                      color: CupertinoTheme.of(context).primaryColor,
+                    ),
                   ),
                 ),
               ),
