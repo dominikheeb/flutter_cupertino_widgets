@@ -59,7 +59,7 @@ class _CupertinoNavigationSplitViewState extends State<CupertinoNavigationSplitV
         previousOrientation = orientation;
       }
 
-      var isTablet = true; // TODO: dynamic
+      var isTablet = true;
       final isLandscape = previousOrientation == Orientation.landscape;
       NavigationSplitViewVisibility effectiveVisibilty;
 

@@ -13,8 +13,7 @@ class TestApp extends StatelessWidget {
         primaryColor: CupertinoColors.systemOrange,
       ),
       home: Container(
-        color: CupertinoDynamicColor.maybeResolve(
-            CupertinoColors.systemBackground, context),
+        color: CupertinoDynamicColor.maybeResolve(CupertinoColors.systemBackground, context),
         child: child,
       ),
     );
